@@ -1,0 +1,27 @@
+Kubernetes Pod Health Check (checkpod.sh)
+
+This script checks if a specific Kubernetes pod is running. It uses parameter expansion to set a default pod name and command substitution to capture the pod's status.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#!/bin/bash
+# Uses the provided pod_name or defaults to "nginx"
+pod_name=${pod_name:-nginx}
+
+# Captures the status of the pod using kubectl and JSON path
+status=$(kubectl get pod $pod_name -o jsonpath='{.status.phase}')
+
+if [ "$status" == "Running" ]; then
+    echo "$pod_name is healthy"
+    exit 0 # Success signal
+else
+    echo "$pod_name is not healthy"
+    exit 1 # Failure signal
+fi
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Key Concepts:
+Parameter Expansion (${var:-default}): Ensures the script has a value to work with even if no variable is explicitly provided.
+
+Exit Codes: The script uses exit 0 for success and exit 1 for failure, which allows CI/CD pipelines and monitoring tools to react to the script's outcome
