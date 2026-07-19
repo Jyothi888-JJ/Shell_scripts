@@ -1,0 +1,23 @@
+Real-time Log Monitoring Script (log.sh)
+This script monitors a log file in real-time and automatically highlights lines containing the word "error".
+
+#!/bin/bash
+
+# Sets the target log file path
+log_file=${log_file:-/var/log/messages}
+
+# tail -f follows the file as new lines are added
+tail -f $log_file | while read line
+do
+    # Greps each line for the keyword "error"
+    if echo $line | grep "error"; then
+        echo "Error detected: $line"
+    fi
+done
+
+
+Key Concepts:
+
+Event-Driven Automation: Instead of manually scanning logs, the script reacts the moment an error occurs.
+
+While Loops: The while read line loop processes the continuous stream of data coming from the tail -f command line-by-line.
